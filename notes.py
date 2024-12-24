@@ -98,6 +98,5 @@ class Note:
             with open('notes.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
         except:
-            print('Пустой список')
             return []
 

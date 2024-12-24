@@ -1,6 +1,7 @@
 import csv
 from notes import Note
 from tasks import Task
+from contact import Contact
 
 def main():
     while True:
@@ -12,7 +13,7 @@ def main():
         elif ans == '2':
             task_menu()
         elif ans == '3':
-            pass
+            contact_menu()
         elif ans == '4':
             pass
         elif ans == '5':
@@ -133,6 +134,54 @@ def task_menu():
         else:
             print('Повторите ввод, я вас не понял')
 
+def contact_menu():
+    while True:
+        print(
+            'Выберите действие:\n1. Создание нового контакта\n2. Поиск контакта\n3. Редактирование контакта\n4. Удаление контакта\n5. Импорт контактов\n6. Экспорт контактов\n7. Назад')
+        ans = input()
+        if ans == '1':
+            name = input('Введите имя контакта: ')
+            if name == '':
+                print('Обязательное поле')
+            else:
+                phone = input('Введите номер контакта: ')
+                email = input('Введите почту контакта: ')
+                contact = Contact(name=name, phone=phone, email=email, flag_create=1)
+        elif ans == '2':
+            contact = Contact()
+            name = input('Введите имя или номер телефона контакта: ')
+            contact.find_contact(name)
+        elif ans == '3':
+            try:
+                id_contact = int(input('Введите id контакта: '))
+                name = input('Введите новое имя контакта: ')
+                if name == '':
+                    print('Обязательное поле')
+                else:
+                    phone = input('Введите новый номер телефона контакта: ')
+                    email = input('Введите новую почту контакта: ')
+                    contact = Contact()
+                    contact.edit_contact(id_contact, name=name, phone=phone, email=email)
+            except:
+                print('Неправильный ввод')
+        elif ans == '4':
+            try:
+                id_contact = int(input('Введите id контакта: '))
+                contact = Contact()
+                contact.delete_contact(id_contact)
+            except:
+                print('Неправильный ввод')
+        elif ans == '5':
+            file_name = input('Введите название файла: ')
+            contact = Contact()
+            contact.import_contact_to_csv(file_name)
+        elif ans == '6':
+            contact = Contact()
+            contact.export_to_csv()
+        elif ans == '7':
+            break
+        else:
+            print('Повторите ввод, я вас не понял')
 
 
 

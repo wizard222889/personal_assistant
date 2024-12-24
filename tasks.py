@@ -29,7 +29,6 @@ class Task:
             with open('tasks.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
         except:
-            print('Пустой список')
             return []
 
     def task_done(self, id: int):
@@ -74,7 +73,7 @@ class Task:
     def delete_task(self, id):
         try:
             data_tasks = self.load_tasks()
-            new_data_tasks = [note for note in data_tasks if note['id'] != id]
+            new_data_tasks = [task for task in data_tasks if task['id'] != id]
             with open('tasks.json', 'w', encoding='utf-8') as file:
                 json.dump(new_data_tasks, file, ensure_ascii=False, indent=4)
             print('Задача удалена')
