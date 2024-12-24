@@ -2,6 +2,8 @@ import csv
 from notes import Note
 from tasks import Task
 from contact import Contact
+from finance import FinanceRecord
+
 
 def main():
     while True:
@@ -15,14 +17,15 @@ def main():
         elif ans == '3':
             contact_menu()
         elif ans == '4':
-            pass
+            finance_menu()
         elif ans == '5':
-            pass
+            calculate()
         elif ans == '6':
             print('Пока!')
             break
         else:
             print('Повторите ввод, я вас не понял')
+
 
 def note_menu():
     while True:
@@ -76,6 +79,7 @@ def note_menu():
             break
         else:
             print('Повторите ввод, я вас не понял')
+
 
 def task_menu():
     while True:
@@ -134,6 +138,7 @@ def task_menu():
         else:
             print('Повторите ввод, я вас не понял')
 
+
 def contact_menu():
     while True:
         print(
@@ -184,6 +189,69 @@ def contact_menu():
             print('Повторите ввод, я вас не понял')
 
 
+def finance_menu():
+    while True:
+        print(
+            'Выберите действие:\n1. Добавить новую запись\n2. Просмотреть все записи\n3. Генерация отчёта\n4. Удалить запись\n5. Импорт финансовых записей из CSV\n6. Экспорт финансовых записей в CSV\n7. Назад')
+        ans = input()
+        if ans == '1':
+            try:
+                amount = int(input('Введите сумму операции: '))
+                category = input('Введите категорию: ')
+                date = input('Введите дату(ДД-ММ-ГГГГ): ')
+                description = input('Введите описание: ')
+                record = FinanceRecord(amount=amount, category=category, date=date, description=description,
+                                       flag_create=1)
+            except:
+                print('Неправильный ввод')
+        elif ans == '2':
+            record = FinanceRecord()
+            ans2 = input('Фильтрация: 1. категория 2. по дате')
+            if ans2 == '1':
+                category = input('Введите категорию: ')
+                record.filtered_record(category=category)
+            elif ans2 == '2':
+                start_date = input('Введите начальную дату(ДД-ММ-ГГГГ): ')
+                end_date = input('Введите конечную дату(ДД-ММ-ГГГГ): ')
+                record.filtered_record(date_start=start_date, date_end=end_date)
+            else:
+                print('Я вас не понял')
+        elif ans == '3':
+            try:
+                start_date = input('Введите начальную дату(ДД-ММ-ГГГГ): ')
+                end_date = input('Введите конечную дату(ДД-ММ-ГГГГ): ')
+                record = FinanceRecord()
+                record.generate_record(start_date=start_date, end_date=end_date)
+            except:
+                print('Неправильный ввод')
+        elif ans == '4':
+            try:
+                id_record = int(input('Введите id записи: '))
+                record = FinanceRecord()
+                record.delete_record(id_record)
+            except:
+                print('Неправильный ввод')
+        elif ans == '5':
+            file_name = input('Введите название файла: ')
+            record = FinanceRecord()
+            record.import_record_to_csv(file_name)
+        elif ans == '6':
+            record = FinanceRecord()
+            record.export_to_csv()
+        elif ans == '7':
+            break
+        else:
+            print('Повторите ввод, я вас не понял')
+
+def calculate():
+    x = input("Введите выражение: ")
+    try:
+        ans = eval(x)
+        print(f'Результат: {ans}')
+    except ZeroDivisionError:
+        print('На 0 делить нельзя')
+    except Exception as error:
+        print(f'Ошибка в выражении')
 
 if __name__ == '__main__':
     main()
