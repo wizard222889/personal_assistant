@@ -16,7 +16,7 @@ class Note:
         try:
             data_note = self.load_notes()
             data_note.append({'id': self.id, 'title': self.title, 'content': self.content, 'timestamp': self.timestamp})
-            with open('note.json', 'w') as file:
+            with open('notes.json', 'w', encoding='utf-8') as file:
                 json.dump(data_note, file, ensure_ascii=False, indent=4)
             print('Заметка создана')
         except:
@@ -47,7 +47,7 @@ class Note:
                 print('Заметки такой нет')
             else:
                 print('Заметка изменена')
-            with open('note.json', 'w') as file:
+            with open('notes.json', 'w', encoding='utf-8') as file:
                 json.dump(data_note, file, ensure_ascii=False, indent=4)
         except:
             print('Произошла ошибка при редактировании')
@@ -56,11 +56,12 @@ class Note:
         try:
             data_note = self.load_notes()
             new_data_note = [note for note in data_note if note['id'] != id]
-            with open('note.json', 'w') as file:
+            with open('notes.json', 'w', encoding='utf-8') as file:
                 json.dump(new_data_note, file, ensure_ascii=False, indent=4)
             print('Заметка удалена')
         except:
             print('Произошла ошибка при удаление')
+
     def import_notes_to_csv(self, filename: str):
         try:
             data_note = self.load_notes()
@@ -73,7 +74,7 @@ class Note:
                             'content': row['content'],
                             'timestamp': datetime.now().strftime('%d-%m-%Y %H:%M:%S')
                         })
-            with open('note.json', 'w') as file:
+            with open('notes.json', 'w', encoding='utf-8') as file:
                 json.dump(data_note, file, ensure_ascii=False, indent=4)
             print('Заметки импортированы')
         except:
@@ -94,7 +95,7 @@ class Note:
 
     def load_notes(self):
         try:
-            with open('note.json', 'r') as file:
+            with open('notes.json', 'r', encoding='utf-8') as file:
                 return json.load(file)
         except:
             print('Пустой список')

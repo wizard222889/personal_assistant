@@ -1,5 +1,6 @@
 import csv
 from notes import Note
+from tasks import Task
 
 def main():
     while True:
@@ -9,7 +10,7 @@ def main():
         if ans == '1':
             note_menu()
         elif ans == '2':
-            pass
+            task_menu()
         elif ans == '3':
             pass
         elif ans == '4':
@@ -29,8 +30,11 @@ def note_menu():
         ans = input()
         if ans == '1':
             title = input('Введите название заметки: ')
-            content = input('Введите подробности заметки: ')
-            note = Note(title=title, content=content, flag_create=1)
+            if title == '':
+                print('Обязательное поле')
+            else:
+                content = input('Введите подробности заметки: ')
+                note = Note(title=title, content=content, flag_create=1)
         elif ans == '2':
             note = Note()
             print(note.load_notes())
@@ -45,9 +49,12 @@ def note_menu():
             try:
                 id_note = int(input('Введите id заметки: '))
                 title = input('Введите новый заголовок: ')
-                content = input('Введите новое описание: ')
-                note = Note()
-                note.edit_note(id_note, title=title, content=content)
+                if title == '':
+                    print('Обязательное поле')
+                else:
+                    content = input('Введите новое описание: ')
+                    note = Note()
+                    note.edit_note(id_note, title=title, content=content)
             except:
                 print('Неправильный ввод')
         elif ans == '5':
@@ -64,6 +71,63 @@ def note_menu():
         elif ans == '7':
             note = Note()
             note.export_to_csv()
+        elif ans == '8':
+            break
+        else:
+            print('Повторите ввод, я вас не понял')
+
+def task_menu():
+    while True:
+        print(
+            'Выберите действие:\n1. Создание новой задачи\n2. Просмотр списка задач\n3. Отметка задачи как выполненной\n4. Редактирование задачи\n5. Удаление задачи\n6. Импорт задачи\n7. Экспорт задач\n8. Назад')
+        ans = input()
+        if ans == '1':
+            title = input('Введите название задачи: ')
+            if title == '':
+                print('Обязательное поле')
+            else:
+                description = input('Введите подробности задачи: ')
+                priority = input('Введите приоритет(высокий, средний, низкий): ')
+                due_date = input('Введите срок: ')
+                task = Task(title=title, description=description, priority=priority, due_date=due_date, flag_create=1)
+        elif ans == '2':
+            task = Task()
+            print(task.load_tasks())
+        elif ans == '3':
+            try:
+                id_task = int(input('Введите id задачи: '))
+                task = Task()
+                task.task_done(id_task)
+            except:
+                print('Неправильный ввод')
+        elif ans == '4':
+            try:
+                id_task = int(input('Введите id задачи: '))
+                title = input('Введите новый заголовок: ')
+                if title == '':
+                    print('Обязательное поле')
+                else:
+                    description = input('Введите подробности задачи: ')
+                    priority = input('Введите приоритет(высокий, средний, низкий): ')
+                    due_date = input('Введите срок: ')
+                    task = Task()
+                    task.edit_task(id_task, title=title, description=description, priority=priority, due_date=due_date)
+            except:
+                print('Неправильный ввод')
+        elif ans == '5':
+            try:
+                id_task = int(input('Введите id задачи: '))
+                task = Task()
+                task.delete_task(id_task)
+            except:
+                print('Неправильный ввод')
+        elif ans == '6':
+            file_name = input('Введите название файла: ')
+            task = Task()
+            task.import_tasks_to_csv(file_name)
+        elif ans == '7':
+            task = Task()
+            task.export_to_csv()
         elif ans == '8':
             break
         else:
