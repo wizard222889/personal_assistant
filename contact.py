@@ -55,10 +55,17 @@ class Contact:
     def delete_contact(self, id: int):
         try:
             data_contact = self.load_contact()
-            new_data_contact = [contact for contact in data_contact if contact['id'] != id]
-            with open('contacts.json', 'w', encoding='utf-8') as file:
-                json.dump(new_data_contact, file, ensure_ascii=False, indent=4)
-            print('Контакт удален')
+            flag = 0
+            for contact in data_contact:
+                if contact['id'] == id:
+                    flag = 1
+            if flag:
+                new_data_contact = [contact for contact in data_contact if contact['id'] != id]
+                with open('contacts.json', 'w', encoding='utf-8') as file:
+                    json.dump(new_data_contact, file, ensure_ascii=False, indent=4)
+                print('Контакт удален')
+            else:
+                print('Такого контакта нет уже')
         except:
             print('Произошла ошибка при удаление')
 

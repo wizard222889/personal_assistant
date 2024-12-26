@@ -41,7 +41,7 @@ def note_menu():
                 note = Note(title=title, content=content, flag_create=1)
         elif ans == '2':
             note = Note()
-            print(note.load_notes())
+            note.output_notes()
         elif ans == '3':
             try:
                 id_note = int(input('Введите id заметки: '))
@@ -97,7 +97,7 @@ def task_menu():
                 task = Task(title=title, description=description, priority=priority, due_date=due_date, flag_create=1)
         elif ans == '2':
             task = Task()
-            print(task.load_tasks())
+            task.output_tasks()
         elif ans == '3':
             try:
                 id_task = int(input('Введите id задачи: '))
@@ -196,7 +196,7 @@ def finance_menu():
         ans = input()
         if ans == '1':
             try:
-                amount = int(input('Введите сумму операции: '))
+                amount = float(input('Введите сумму операции: '))
                 category = input('Введите категорию: ')
                 date = input('Введите дату(ДД-ММ-ГГГГ): ')
                 description = input('Введите описание: ')
@@ -206,7 +206,7 @@ def finance_menu():
                 print('Неправильный ввод')
         elif ans == '2':
             record = FinanceRecord()
-            ans2 = input('Фильтрация: 1. категория 2. по дате')
+            ans2 = input('Фильтрация: 1. категория 2. по дате ')
             if ans2 == '1':
                 category = input('Введите категорию: ')
                 record.filtered_record(category=category)

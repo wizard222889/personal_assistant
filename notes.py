@@ -22,6 +22,14 @@ class Note:
         except:
             print('Произошла ошибка при сохранение')
 
+    def output_notes(self):
+        data_notes = self.load_notes()
+        if len(data_notes) == 0:
+            print('Список задач пока пуст')
+        else:
+            for note in data_notes:
+                print(f'ID:{note["id"]}, title: {note["title"]}, content: {note["content"]}, timestamp: {note["timestamp"]}')
+
     def view_deatil(self, id: int):
         data_note = self.load_notes()
         flag = 0
@@ -55,10 +63,18 @@ class Note:
     def delete_note(self, id: int):
         try:
             data_note = self.load_notes()
-            new_data_note = [note for note in data_note if note['id'] != id]
-            with open('notes.json', 'w', encoding='utf-8') as file:
-                json.dump(new_data_note, file, ensure_ascii=False, indent=4)
-            print('Заметка удалена')
+            flag = 0
+            for note in data_note:
+                if note['id'] == id:
+                    flag = 1
+                    break
+            if flag:
+                new_data_note = [note for note in data_note if note['id'] != id]
+                with open('notes.json', 'w', encoding='utf-8') as file:
+                    json.dump(new_data_note, file, ensure_ascii=False, indent=4)
+                print('Заметка удалена')
+            else:
+                print('Заметки уже нет')
         except:
             print('Произошла ошибка при удаление')
 

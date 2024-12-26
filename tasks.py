@@ -31,6 +31,14 @@ class Task:
         except:
             return []
 
+    def output_tasks(self):
+        data_tasks = self.load_tasks()
+        if len(data_tasks) == 0:
+            print('Список задач пока пуст')
+        else:
+            for task in data_tasks:
+                print(f'ID:{task["id"]}, title: {task["title"]}, description: {task["description"]}, done: {task["done"]}, priority: {task["priority"]}, due_date: {task["due_date"]}')
+
     def task_done(self, id: int):
         try:
             flag = 0
@@ -73,10 +81,17 @@ class Task:
     def delete_task(self, id):
         try:
             data_tasks = self.load_tasks()
-            new_data_tasks = [task for task in data_tasks if task['id'] != id]
-            with open('tasks.json', 'w', encoding='utf-8') as file:
-                json.dump(new_data_tasks, file, ensure_ascii=False, indent=4)
-            print('Задача удалена')
+            flag = 0
+            for task in data_tasks:
+                if task['id'] == id:
+                    flag = 1
+            if flag:
+                new_data_tasks = [task for task in data_tasks if task['id'] != id]
+                with open('tasks.json', 'w', encoding='utf-8') as file:
+                    json.dump(new_data_tasks, file, ensure_ascii=False, indent=4)
+                print('Задача удалена')
+            else:
+                print('Такой задачи уже нет')
         except:
             print('Произошла ошибка при удаление')
 

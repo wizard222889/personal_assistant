@@ -19,6 +19,13 @@ class FinanceRecord:
                 return json.load(file)
         except:
             return []
+    def output_record(self):
+        data_record = self.load_record()
+        if len(data_record) == 0:
+            print('Пока пусто')
+        else:
+            for record in data_record:
+                print(f'ID:{record["id"]}, amount: {record["amount"]}, category: {record["category"]},date: {record["date"]}, description: {record["description"]}')
 
     def filtered_record(self, category='', date_start='', date_end=''):
         try:
@@ -34,7 +41,7 @@ class FinanceRecord:
                     if date_start <= datetime.strptime(record['date'], '%d-%m-%Y') <= date_end:
                         print(record['amount'], record['category'], record['date'], record['description'])
             else:
-                print(data_record)
+                self.output_record()
         except:
             print('Произошла ошибка при фильтрации')
 
@@ -76,10 +83,18 @@ class FinanceRecord:
     def delete_record(self, id: int):
         try:
             data_records = self.load_record()
-            new_data_records = [record for record in data_records if record['id'] != id]
-            with open('finance.json', 'w', encoding='utf-8') as file:
-                json.dump(new_data_records, file, ensure_ascii=False, indent=4)
-            print('Запись удалена')
+            flag = 0
+            for record in data_records:
+                if record['id'] == id:
+                    flag = 1
+                    break
+            if flag:
+                new_data_records = [record for record in data_records if record['id'] != id]
+                with open('finance.json', 'w', encoding='utf-8') as file:
+                    json.dump(new_data_records, file, ensure_ascii=False, indent=4)
+                print('Запись удалена')
+            else:
+                print('Записи уже нет')
         except:
             print('Произошла ошибка при удаление')
 
@@ -91,7 +106,7 @@ class FinanceRecord:
                 for row in reader:
                      data_record.append({
                             'id': max([record['id'] for record in data_record], default=0) + 1,
-                            'amount': int(row['amount']),
+                            'amount': float(row['amount']),
                             'category': row['category'],
                             'date': row['date'],
                             'description': row['description']
